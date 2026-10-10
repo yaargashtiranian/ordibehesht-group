@@ -55,5 +55,24 @@ has been added to the environment configuration draft; review and save the
 settings to apply it. The initial components were installed through the CLI
 using source from the official GitHub repository. See `THIRD_PARTY_NOTICES.md`.
 
-This is a starter page; no backend, contact submission, or deployment is
-configured. No secrets are required to develop or build it.
+## Website experience
+
+The homepage is a Persian RTL narrative for the group’s B2B employee welfare
+and credit services, with eight linked brands. Brand descriptions use the
+provided brief; no unverified performance statistics are displayed.
+
+- Three.js renders a local, procedural teal/gold sculpture, inspired by the
+  supplied brand references. It is a design interpretation, not the original
+  logo file. Replace the vector mark with the official asset when available.
+- A sticky three-chapter story responds to scroll on desktop. Mobile presents
+  the chapters in readable order without scroll locking.
+- Brand filters, expandable descriptions, mobile navigation, and email/phone
+  contact actions work without a backend.
+- Contact: info@ordibehesht.group and +98 21 92005001, supplied by the user.
+- Reduced-motion preferences disable animated transforms. WebGL failure uses
+  the vector fallback. Rendering pauses outside the viewport or in a hidden tab.
+- All visual/font assets are local; service links open their respective sites.
+
+Validation: ESLint, TypeScript, production build, and Chromium checks for desktop
+and mobile layouts, brand filters, descriptions, chapter changes, menu behavior,
+local font loading, and reduced-motion behavior. No Vercel deployment is required.

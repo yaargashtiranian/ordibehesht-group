@@ -7,8 +7,16 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "گروه اردیبهشت | Ordibehesht-Group", template: "%s | گروه اردیبهشت" },
-  description: "وب‌سایت رسمی گروه اردیبهشت",
+  description: "گروه شرکت‌های اردیبهشت؛ خدمات رفاهی، خرید اعتباری و راهکارهای سازمانی برای تجربه‌ای بهتر در زندگی کارکنان.",
   applicationName: "Ordibehesht-Group",
+  metadataBase: new URL("https://ordibehesht.group"),
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    siteName: "گروه شرکت‌های اردیبهشت",
+    title: "زندگی، در مدارِ اردیبهشت",
+    description: "خدمات رفاهی و خرید اعتباری برای کارکنان سازمان‌ها؛ از اعتبار تا زندگی.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

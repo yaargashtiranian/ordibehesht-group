@@ -1,34 +1,42 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Arrow } from "@/components/experience/arrow";
+import { Navigation } from "@/components/experience/navigation";
+import { Sculpture } from "@/components/experience/sculpture";
+import { ScrollStory } from "@/components/experience/scroll-story";
+import { Ecosystem } from "@/components/experience/ecosystem";
+import { BrandMark } from "@/components/experience/brand-mark";
 
 export default function Home() {
   return (
-    <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-12 px-6 py-8 sm:px-10">
-      <header className="flex flex-wrap items-center justify-between gap-6 border-b pb-6">
-        <a href="#home" className="text-xl font-bold">گروه اردیبهشت</a>
-        <nav aria-label="ناوبری اصلی" className="flex items-center gap-6 text-sm">
-          <a href="#about" className="hover:text-primary">درباره ما</a>
-          <Button asChild variant="outline"><a href="#welcome">آشنایی با اردیبهشت</a></Button>
-        </nav>
-      </header>
-      <main id="home" className="flex flex-1 flex-col justify-center gap-12 py-12">
-        <section id="welcome" className="flex max-w-3xl flex-col items-start gap-6">
-          <Badge variant="secondary">Ordibehesht-Group</Badge>
-          <h1 className="text-4xl font-bold leading-relaxed sm:text-6xl">به گروه اردیبهشت خوش آمدید</h1>
-          <p className="max-w-2xl text-lg leading-9 text-muted-foreground">آغاز یک مسیر تازه، با نگاهی به فردا.</p>
-          <Button asChild size="lg"><a href="#about">بیشتر بدانید</a></Button>
+    <>
+      <a className="skip-link" href="#main">رفتن به محتوای اصلی</a>
+      <Navigation />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Organization", name: "گروه شرکت‌های اردیبهشت", url: "https://ordibehesht.group/", email: "info@ordibehesht.group", telephone: "+98-21-92005001" }) }} />
+      <main id="main">
+        <section id="home" className="hero" aria-labelledby="hero-heading">
+          <div className="hero-watermark" aria-hidden="true" dir="ltr">O</div>
+          <div className="hero-copy">
+            <div className="eyebrow"><span className="line" /> آینده‌ای که با هم می‌سازیم</div>
+            <h1 id="hero-heading">زندگی،<br />در مدارِ <span className="gold-word">اردیبهشت.</span></h1>
+            <p>ما میان توان سازمان‌ها و خواسته‌های آدم‌ها،<br className="desktop-break" /> پلی از امکان می‌سازیم.</p>
+            <a href="#ecosystem" className="text-link">کشف جهان اردیبهشت <span className="circle-arrow"><Arrow direction="down" /></span></a>
+          </div>
+          <div className="hero-art"><div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" /><Sculpture /><div className="sculpture-label" dir="ltr"><span>THE ART OF POSSIBILITY</span><span>FORM / FLOW / POSSIBILITY</span></div></div>
+          <div className="hero-bottom"><a href="#vision" className="scroll-cue"><span className="scroll-line" /> روایت ما را دنبال کنید</a><span dir="ltr">A GROUP. A VISION. A BETTER LIFE.</span><span className="hero-index" dir="ltr">01 — 05</span></div>
         </section>
-        <Card id="about" className="max-w-2xl">
-          <CardHeader>
-            <CardTitle><h2>درباره گروه اردیبهشت</h2></CardTitle>
-            <CardDescription>Ordibehesht-Group</CardDescription>
-          </CardHeader>
-          <CardContent><p className="leading-8">وب‌سایت گروه اردیبهشت در حال آماده‌سازی است. به‌زودی اطلاعات بیشتری درباره ما در این صفحه قرار خواهد گرفت.</p></CardContent>
-          <CardFooter><Badge variant="outline">به‌زودی</Badge></CardFooter>
-        </Card>
+        <div className="brand-strip" aria-label="حوزه‌های فعالیت"><span>اعتبار و رفاه</span><span className="strip-star" aria-hidden="true">✳</span><span>سفر و تجربه</span><span className="strip-star" aria-hidden="true">✳</span><span>سلامت و زندگی</span><span className="strip-star" aria-hidden="true">✳</span><span>تجارت و فرصت</span></div>
+        <section id="vision" className="vision-section section-shell" aria-labelledby="vision-heading">
+          <div className="eyebrow"><span className="line" /> نگاه اردیبهشت <span className="section-count" dir="ltr">01 / THE VISION</span></div>
+          <div className="vision-content"><h2 id="vision-heading">هر سازمان،<br />جهانی از <span>آدم‌هاست.</span></h2><div className="vision-copy"><p className="large-copy">و هر آدم، جهانی از آرزوها.</p><p>گروه شرکت‌های اردیبهشت با تمرکز بر بازار سازمانی، خدمات رفاهی و خرید اعتباری را به زندگی کارکنان پیوند می‌دهد؛ تا فاصله میان خواستن و توانستن، کوتاه‌تر شود.</p><p>از سازمان‌های دولتی و خصوصی تا بانک‌ها و شرکت‌های بزرگ؛ نگاه ما به همکاری، از نیازهای واقعی آدم‌ها آغاز می‌شود.</p><div className="vision-signature"><BrandMark /><span>رفاه برای کارکنان.<br />ارزش برای سازمان‌ها.</span></div></div></div>
+        </section>
+        <ScrollStory />
+        <Ecosystem />
+        <section id="partnership" className="partnership-section section-shell" aria-labelledby="partnership-heading">
+          <div className="partnership-ambient" aria-hidden="true"><div /><div /><div /></div>
+          <div className="eyebrow light"><span className="line" /> همکاری سازمانی</div>
+          <div className="partnership-content"><div><h2 id="partnership-heading">فصل بعدی را،<br /><span>با هم بنویسیم.</span></h2><p>ظرفیت‌های اردیبهشت، در کنار اهداف سازمان شما.<br />برای کارکنانی که شایسته تجربه‌ای بهترند.</p><a href="mailto:info@ordibehesht.group?subject=%D8%AF%D8%B1%D8%AE%D9%88%D8%A7%D8%B3%D8%AA%20%D9%87%D9%85%DA%A9%D8%A7%D8%B1%DB%8C%20%D8%B3%D8%A7%D8%B2%D9%85%D8%A7%D9%86%DB%8C" className="partnership-cta">درخواست همکاری سازمانی <Arrow /></a><div className="contact-details"><a href="mailto:info@ordibehesht.group" dir="ltr">info@ordibehesht.group</a><a href="tel:+982192005001" dir="ltr" aria-label="تماس با گروه اردیبهشت، ۰۲۱ ۹۲۰۰۵۰۰۱">۰۲۱–۹۲۰۰۵۰۰۱</a></div></div><div className="partnership-steps"><div><span>۰۱</span><p>شناخت نیاز سازمان<small>شروع از آدم‌ها و اولویت‌های شما</small></p></div><div><span>۰۲</span><p>بررسی مسیر همکاری<small>انتخاب خدمات متناسب با نیاز کارکنان</small></p></div><div><span>۰۳</span><p>ساختن ارزش مشترک<small>همراهی در مسیر تجربه‌ای بهتر</small></p></div></div></div>
+        </section>
       </main>
-      <footer className="border-t py-6 text-sm text-muted-foreground">گروه اردیبهشت · Ordibehesht-Group</footer>
-    </div>
+      <footer className="site-footer section-shell"><div className="footer-top"><a href="#home" className="wordmark"><BrandMark /><span>گروه اردیبهشت<small dir="ltr">ORDIBEHESHT GROUP</small></span></a><p>آینده، از امکان‌های امروز ساخته می‌شود.</p><a href="#home" className="back-top">بازگشت به بالا <span><Arrow direction="up" /></span></a></div><div className="footer-bottom"><span>گروه شرکت‌های اردیبهشت</span><span dir="ltr">DESIGNED AROUND PEOPLE.</span><span>تمام حقوق محفوظ است.</span></div></footer>
+    </>
   );
 }
