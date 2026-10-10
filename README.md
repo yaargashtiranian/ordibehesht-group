@@ -57,22 +57,57 @@ using source from the official GitHub repository. See `THIRD_PARTY_NOTICES.md`.
 
 ## Website experience
 
-The homepage is a Persian RTL narrative for the group’s B2B employee welfare
-and credit services, with eight linked brands. Brand descriptions use the
-provided brief; no unverified performance statistics are displayed.
+The homepage is a Persian RTL narrative for B2B employee welfare and credit
+services. Descriptions use the supplied brief, without invented metrics.
 
-- Three.js renders a local, procedural teal/gold sculpture, inspired by the
-  supplied brand references. It is a design interpretation, not the original
-  logo file. Replace the vector mark with the official asset when available.
-- A sticky three-chapter story responds to scroll on desktop. Mobile presents
-  the chapters in readable order without scroll locking.
-- Brand filters, expandable descriptions, mobile navigation, and email/phone
-  contact actions work without a backend.
-- Contact: info@ordibehesht.group and +98 21 92005001, supplied by the user.
-- Reduced-motion preferences disable animated transforms. WebGL failure uses
-  the vector fallback. Rendering pauses outside the viewport or in a hidden tab.
-- All visual/font assets are local; service links open their respective sites.
+- The rectangular teal/gold identity is traced from the supplied raster reference,
+  including its crescent, frame, wordmark, and colors. It is not a new logo.
+  The original vector file can replace this tracing for exact typography.
+- The hero is an animated geographic globe with three orbiting brand-color
+  ribbons. Hero graphics are separate from the official identity.
+- The desktop brand journey translates vertical page scroll into eight horizontal
+  chapters. Direct navigation and arrow keys work. Mobile uses native horizontal
+  scrolling and snap points. Reduced motion renders all chapters in normal flow.
+- The collaboration form requires name, organization, and phone, with optional
+  service selection. Iranian/Persian digits are normalized on both client/server.
 
-Validation: ESLint, TypeScript, production build, and Chromium checks for desktop
-and mobile layouts, brand filters, descriptions, chapter changes, menu behavior,
-local font loading, and reduced-motion behavior. No Vercel deployment is required.
+## Lead registration and email
+
+`POST /api/leads` validates submissions and stores a private JSON record per
+request ID. Duplicate submissions are idempotent. Storage failures are reported
+as failures. Contact records are ignored by Git and have no public read endpoint.
+
+For a persistent Node host, set `LEAD_STORAGE_DIR` to a private persistent volume.
+The local default is `.data/leads`. This filesystem adapter is not suitable for
+an ephemeral/serverless filesystem; use a persistent backend before that deployment.
+Backups, retention, and restricted operator access belong to the production host.
+
+Email notifications go to `info@ordibehesht.group` using Resend:
+
+1. Verify the sending domain in Resend.
+2. Add `RESEND_API_KEY` securely in environment settings (never Git or chat).
+3. Set `LEAD_FROM_EMAIL` to the verified sender, such as
+   `Ordibehesht Group <info@ordibehesht.group>`.
+4. Allow HTTPS to `api.resend.com` and restart the application after configuration
+   is applied. Requirements are saved in the cloud configuration draft.
+
+Without working email settings, registration still saves the lead but reports
+that email has not been sent and offers direct email/telephone follow-up. Provider
+acceptance is recorded as `accepted`; inbox delivery is not independently verified.
+If the provider fails, the saved record remains `pending`. Reposting the same
+request ID retries the notification using the provider's idempotency key. There
+is no automatic background email retry worker.
+
+Contact: `info@ordibehesht.group`, `+98 21 92005001`.
+
+## Verification
+
+`npm test` runs seven lead-handler tests covering persistence, Persian digits,
+validation, same-origin checks, body limits, duplicate submissions, provider
+success/failure/retry, and storage failure. Mail requests in tests are mocked;
+no test messages are sent to the group's mailbox.
+
+Chromium checks cover the globe, horizontal scroll, keyboard and mobile controls,
+form validation/actual local storage, responsive overflow, reduced motion, and
+WCAG automated accessibility checks. Also run `npm run lint`, `npm run typecheck`,
+and `npm run build`.

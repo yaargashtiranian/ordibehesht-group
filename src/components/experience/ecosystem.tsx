@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Arrow } from "./arrow";
 
 const brands = [
@@ -13,9 +13,18 @@ const brands = [
   { number: "07", name: "اردی هلث", english: "ORDI HEALTH", category: "life", kind: "health", description: "سلامت، بخشی از رفاه", detail: "شاخه خدمات سلامت‌محور در اکوسیستم اردیبهشت؛ برای کامل‌تر شدن مسیر رفاه.", href: "http://med.ordibehesht.shop/" },
   { number: "08", name: "اردی ترید", english: "ORDI TRADE", category: "special", kind: "trade", description: "پیوند ظرفیت‌ها و بازارها", detail: "خدمات بازرگانی گروه اردیبهشت و مسیری برای توسعه همکاری‌های تجاری.", href: "https://orditrade.com" },
 ];
-const filters = [{ id: "all", label: "همه برندها" }, { id: "credit", label: "اعتبار و خرید" }, { id: "life", label: "سبک زندگی" }, { id: "special", label: "خدمات تخصصی" }];
+const features: Record<string, string[]> = {
+  pay: ["خرید اعتباری", "خدمات رفاهی", "همکاری سازمانی"],
+  gold: ["طلا و زیورآلات", "خرید اقساطی", "فروشگاه آنلاین"],
+  car: ["خرید خودرو", "مسیر اعتباری"],
+  kala: ["خرید کالا", "نیازهای کارکنان"],
+  travel: ["پرواز و هتل", "تور و ویزا", "سفرهای تشویقی"],
+  visa: ["خدمات مهاجرت", "مسیرهای ویزا"],
+  health: ["خدمات سلامت", "رفاه کارکنان"],
+  trade: ["بازرگانی", "همکاری تجاری"],
+};
 
-function BrandArtwork({ kind }: { kind: string }) {
+export function BrandArtwork({ kind }: { kind: string }) {
   return (
     <div className={`brand-art art-${kind}`} aria-hidden="true">
       <div className="art-halo" /><div className="art-piece piece-one" /><div className="art-piece piece-two" /><div className="art-piece piece-three" />
@@ -25,27 +34,56 @@ function BrandArtwork({ kind }: { kind: string }) {
 }
 
 export function Ecosystem() {
-  const [filter, setFilter] = useState("all");
-  const selected = brands.filter(brand => filter === "all" || brand.category === filter);
+  const root = useRef<HTMLElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const viewport = useRef<HTMLDivElement>(null);
+  const progress = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const [linear, setLinear] = useState(false);
+  useEffect(() => {
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const desktop = matchMedia("(min-width: 761px)");
+    let frame = 0; let last = -1;
+    const update = () => {
+      frame = 0;
+      setLinear(reduced.matches);
+      if (!root.current || !track.current) return;
+      if (!desktop.matches || reduced.matches) { track.current.style.transform = "none"; return; }
+      const rect = root.current.getBoundingClientRect();
+      const fraction = Math.max(0, Math.min(1, -rect.top / (rect.height - innerHeight)));
+      track.current.style.transform = `translate3d(${fraction * (brands.length - 1) / brands.length * 100}%, 0, 0)`;
+      if (progress.current) progress.current.style.transform = `scaleX(${fraction})`;
+      const index = Math.round(fraction * (brands.length - 1));
+      if (index !== last) { setActive(index); last = index; }
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    addEventListener("scroll", schedule, { passive: true }); addEventListener("resize", schedule);
+    reduced.addEventListener("change", update); desktop.addEventListener("change", update); update();
+    return () => { cancelAnimationFrame(frame); removeEventListener("scroll", schedule); removeEventListener("resize", schedule); reduced.removeEventListener("change", update); desktop.removeEventListener("change", update); };
+  }, []);
+  function goTo(index: number) {
+    index = Math.max(0, Math.min(brands.length - 1, index));
+    if (linear) { document.getElementById(`brand-${index}`)?.scrollIntoView({ block: "center" }); return; }
+    if (innerWidth <= 760) { viewport.current?.scrollTo({ left: -index * viewport.current.clientWidth, behavior: "smooth" }); return; }
+    if (!root.current) return;
+    const rect = root.current.getBoundingClientRect();
+    window.scrollTo({ top: scrollY + rect.top + index / (brands.length - 1) * (rect.height - innerHeight), behavior: "smooth" });
+  }
   return (
-    <section id="ecosystem" className="ecosystem-section section-shell" aria-labelledby="ecosystem-heading">
-      <div className="section-heading">
-        <div><div className="eyebrow"><span className="line" /> جهان اردیبهشت</div><h2 id="ecosystem-heading">یک نگاه مشترک.<br /><span className="muted-heading">جهانی از امکان‌ها.</span></h2></div>
-        <p>برندهایی مستقل، با یک باور مشترک:<br />زندگی بهتر، از دسترسی بهتر آغاز می‌شود.</p>
+    <section id="ecosystem" ref={root} className="brand-journey" aria-labelledby="ecosystem-heading">
+      <div className="journey-sticky">
+        <div className="journey-heading section-shell"><div><div className="eyebrow"><span className="line" /> جهان اردیبهشت</div><h2 id="ecosystem-heading">هشت مسیر.<span> یک جهان مشترک.</span></h2></div><p>اسکرول کنید؛ هر برند، فصل تازه‌ای از زندگی.</p></div>
+        <div className="journey-viewport" ref={viewport} tabIndex={0} role="region" aria-label="روایت برندها؛ کلید چپ برای برند بعدی و راست برای قبلی" onKeyDown={event => { if (event.target !== event.currentTarget) return; if (event.key === "ArrowLeft") { event.preventDefault(); goTo(active + 1); } if (event.key === "ArrowRight") { event.preventDefault(); goTo(active - 1); } }} onScroll={() => { if (innerWidth <= 760 && viewport.current) setActive(Math.round(Math.abs(viewport.current.scrollLeft) / viewport.current.clientWidth)); }}>
+          <div className="journey-track" ref={track}>
+            {brands.map((brand, index) => <article id={`brand-${index}`} key={brand.number} className={`journey-panel panel-${brand.kind}`} aria-hidden={!linear && active !== index}>
+              <div className="journey-copy"><span className="journey-kicker" dir="ltr">{brand.number} / {brand.english}</span><h3>{brand.name}</h3><p className="journey-promise">{brand.description}</p><p className="journey-detail">{brand.detail}</p><div className="journey-features">{features[brand.kind].map(feature => <span key={feature}>{feature}</span>)}</div><a href={brand.href} target="_blank" rel="noopener noreferrer" tabIndex={linear || active === index ? 0 : -1} className="text-link">کشف {brand.name}<span className="circle-arrow"><Arrow /></span></a></div>
+              <div className="journey-art"><span className="journey-large-number" dir="ltr">{brand.number}</span><BrandArtwork kind={brand.kind} /><span className="journey-art-label" dir="ltr">{brand.english}</span></div>
+            </article>)}
+          </div>
+        </div>
+        <div className="journey-controls section-shell"><p aria-live="polite">فصل {new Intl.NumberFormat("fa-IR").format(active + 1)} <span>از ۸</span></p><div className="journey-dots" role="group" aria-label="انتخاب برند">{brands.map((brand,index) => <button key={brand.number} aria-label={brand.name} aria-pressed={active === index} onClick={() => goTo(index)}><span /></button>)}</div><div className="journey-arrows"><button aria-label="برند قبلی" disabled={active === 0} onClick={() => goTo(active - 1)}>→</button><button aria-label="برند بعدی" disabled={active === brands.length - 1} onClick={() => goTo(active + 1)}>←</button></div></div>
+        <div className="journey-progress"><div ref={progress} /></div>
       </div>
-      <div className="brand-filters" role="group" aria-label="فیلتر برندها">
-        {filters.map(item => <button key={item.id} onClick={() => setFilter(item.id)} aria-pressed={filter === item.id}>{item.label}<span aria-hidden="true">{filter === item.id ? "−" : "+"}</span></button>)}
-      </div>
-      <p className="sr-only" role="status">{new Intl.NumberFormat("fa-IR").format(selected.length)} برند نمایش داده می‌شود</p>
-      <div className="brand-grid">
-        {selected.map(brand => <article key={brand.number} className="brand-card">
-          <div className="brand-card-top"><span dir="ltr">{brand.number}</span><a href={brand.href} target="_blank" rel="noopener noreferrer" aria-label={`وب‌سایت ${brand.name}، در پنجره جدید`}><Arrow /></a></div>
-          <BrandArtwork kind={brand.kind} />
-          <div className="brand-copy"><span className="brand-english" dir="ltr">{brand.english}</span><h3>{brand.name}</h3><p>{brand.description}</p></div>
-          <details><summary>درباره این برند <span aria-hidden="true">+</span></summary><p>{brand.detail}</p><a href={brand.href} target="_blank" rel="noopener noreferrer">ورود به وب‌سایت <Arrow /></a></details>
-        </article>)}
-      </div>
-      <div className="ecosystem-note"><span className="status-dot" /> خدمات گروه، در مسیر توسعه و تکامل <span dir="ltr">ONE VISION. MANY POSSIBILITIES.</span></div>
     </section>
   );
 }

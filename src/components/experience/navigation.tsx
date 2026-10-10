@@ -18,7 +18,7 @@ export function Navigation() {
   return (
     <header className="site-header">
       <a href="#home" className="wordmark" aria-label="گروه اردیبهشت، صفحه اصلی" onClick={() => setOpen(false)}>
-        <BrandMark /><span>گروه اردیبهشت<small dir="ltr">ORDIBEHESHT GROUP</small></span>
+        <BrandMark />
       </a>
       <nav className="desktop-nav" aria-label="ناوبری اصلی">{links.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>
       <a href="#partnership" className="header-cta">آغاز یک همکاری <Arrow /></a>

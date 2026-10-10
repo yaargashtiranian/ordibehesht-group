@@ -1,3 +1,4 @@
+import { LeadForm } from "@/components/experience/lead-form";
 import { Arrow } from "@/components/experience/arrow";
 import { Navigation } from "@/components/experience/navigation";
 import { Sculpture } from "@/components/experience/sculpture";
@@ -33,10 +34,10 @@ export default function Home() {
         <section id="partnership" className="partnership-section section-shell" aria-labelledby="partnership-heading">
           <div className="partnership-ambient" aria-hidden="true"><div /><div /><div /></div>
           <div className="eyebrow light"><span className="line" /> همکاری سازمانی</div>
-          <div className="partnership-content"><div><h2 id="partnership-heading">فصل بعدی را،<br /><span>با هم بنویسیم.</span></h2><p>ظرفیت‌های اردیبهشت، در کنار اهداف سازمان شما.<br />برای کارکنانی که شایسته تجربه‌ای بهترند.</p><a href="mailto:info@ordibehesht.group?subject=%D8%AF%D8%B1%D8%AE%D9%88%D8%A7%D8%B3%D8%AA%20%D9%87%D9%85%DA%A9%D8%A7%D8%B1%DB%8C%20%D8%B3%D8%A7%D8%B2%D9%85%D8%A7%D9%86%DB%8C" className="partnership-cta">درخواست همکاری سازمانی <Arrow /></a><div className="contact-details"><a href="mailto:info@ordibehesht.group" dir="ltr">info@ordibehesht.group</a><a href="tel:+982192005001" dir="ltr" aria-label="تماس با گروه اردیبهشت، ۰۲۱ ۹۲۰۰۵۰۰۱">۰۲۱–۹۲۰۰۵۰۰۱</a></div></div><div className="partnership-steps"><div><span>۰۱</span><p>شناخت نیاز سازمان<small>شروع از آدم‌ها و اولویت‌های شما</small></p></div><div><span>۰۲</span><p>بررسی مسیر همکاری<small>انتخاب خدمات متناسب با نیاز کارکنان</small></p></div><div><span>۰۳</span><p>ساختن ارزش مشترک<small>همراهی در مسیر تجربه‌ای بهتر</small></p></div></div></div>
+          <div className="partnership-content"><div><h2 id="partnership-heading">فصل بعدی را،<br /><span>با هم بنویسیم.</span></h2><p>ظرفیت‌های اردیبهشت، در کنار اهداف سازمان شما.<br />برای کارکنانی که شایسته تجربه‌ای بهترند.</p><div className="contact-details"><a href="mailto:info@ordibehesht.group" dir="ltr">info@ordibehesht.group</a><a href="tel:+982192005001" dir="ltr" aria-label="تماس با گروه اردیبهشت، ۰۲۱ ۹۲۰۰۵۰۰۱">۰۲۱–۹۲۰۰۵۰۰۱</a></div></div><LeadForm /></div>
         </section>
       </main>
-      <footer className="site-footer section-shell"><div className="footer-top"><a href="#home" className="wordmark"><BrandMark /><span>گروه اردیبهشت<small dir="ltr">ORDIBEHESHT GROUP</small></span></a><p>آینده، از امکان‌های امروز ساخته می‌شود.</p><a href="#home" className="back-top">بازگشت به بالا <span><Arrow direction="up" /></span></a></div><div className="footer-bottom"><span>گروه شرکت‌های اردیبهشت</span><span dir="ltr">DESIGNED AROUND PEOPLE.</span><span>تمام حقوق محفوظ است.</span></div></footer>
+      <footer className="site-footer section-shell"><div className="footer-top"><a href="#home" className="wordmark" aria-label="گروه شرکت‌های اردیبهشت، بازگشت به ابتدا"><BrandMark /></a><p>آینده، از امکان‌های امروز ساخته می‌شود.</p><a href="#home" className="back-top">بازگشت به بالا <span><Arrow direction="up" /></span></a></div><div className="footer-bottom"><span>گروه شرکت‌های اردیبهشت</span><span dir="ltr">DESIGNED AROUND PEOPLE.</span><span>تمام حقوق محفوظ است.</span></div></footer>
     </>
   );
 }
